@@ -10,11 +10,15 @@ function love.update(deltaTime) -- on every frame
         love.event.push('quit')
     end
 
-    movement = player.speed*deltaTime
+    timeByCPU = player.speed*deltaTime
     if love.keyboard.isDown('left', 'a') then
-        player.x = player.x - movement
+        if player.x > 0 then
+            player.x = player.x - timeByCPU
+        end
     elseif love.keyboard.isDown('right', 'd') then
-        player.x = player.x + movement
+        if player.x < (love.graphics.getWidth() - player.img:getWidth()) then
+            player.x = player.x + timeByCPU
+        end
     end
 end
 

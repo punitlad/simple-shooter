@@ -1,8 +1,8 @@
 -- game logic lives here
 
-playerImg = nil
+player = { x = 200, y = 710, speed = 150, img = nil }
 function love.load() -- on startup
-    playerImg = love.graphics.newImage('assets/plane.png')
+    player.img = love.graphics.newImage('assets/plane.png')
 end
 
 function love.update(deltaTime) -- on every frame 
@@ -10,7 +10,5 @@ function love.update(deltaTime) -- on every frame
 end
 
 function love.draw(deltaTime) -- on every frame
-    x = 100 -- from the top left
-    y = 100 -- from the top left
-    love.graphics.draw(playerImg, x, y)
+    love.graphics.draw(player.img, player.x, player.y)
 end

@@ -93,7 +93,11 @@ function love.update(deltaTime) -- on every frame
 end
 
 function love.draw(deltaTime) -- on every frame
-    love.graphics.draw(player.img, player.x, player.y)
+    if isAlive then
+        love.graphics.draw(player.img, player.x, player.y)
+    else
+        love.graphics.print("Game Over", love.graphics:getWidth()/2-50, love.graphics:getHeight()/2-10)
+    end
     for i, bullet in ipairs(bullets) do
         love.graphics.draw(bullet.img, bullet.x, bullet.y)
     end

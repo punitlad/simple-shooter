@@ -2,17 +2,23 @@
 
 player = { x = 200, y = 710, speed = 150, img = nil }
 
--- set of timers
+-- shooting timer
 canShoot = true
 canShootTimerMax = 0.2
 canShootTimer = canShootTimerMax
-
 bulletImg = nil -- image storage
 bullets = {} -- array of current bullets being drawn and updated
+
+-- enemie timer
+createEnemyTimerMax = 0.4
+createEnemyTimer = createEnemyTimerMax
+enemyImg = nil
+enemies = {}
 
 function love.load() -- on startup
     player.img = love.graphics.newImage('assets/plane.png')
     bulletImg = love.graphics.newImage('assets/bullet.png')
+    enemyImg = love.graphics.newImage('assets/enemy.png')
 end
 
 function love.update(deltaTime) -- on every frame 
@@ -49,11 +55,29 @@ function love.update(deltaTime) -- on every frame
             table.remove(bullets, i)
         end
     end
+
+    createEnemyTimer = createEnemyTimer - (1 * deltaTime)
+    if createEnemyTimer < 0 then
+        createEnemyTimer = createEnemyTimerMax
+        randomNumber = math.random(10, love.graphics.getWidth() - 10)
+        newEnemy = { x = randomNumber, y = 10, img = enemyImg }
+        table.insert(enemies, newEnemy)
+    end
+
+    for i, enemy in ipairs(enemies) do 
+        enemy.y = enemy.y + (200 * deltaTime)
+        if enemy.y > 850 then
+            table.remove(enemies, i)
+        end
+    end
 end
 
 function love.draw(deltaTime) -- on every frame
     love.graphics.draw(player.img, player.x, player.y)
     for i, bullet in ipairs(bullets) do
         love.graphics.draw(bullet.img, bullet.x, bullet.y)
+    end
+    for i, enemy in ipairs(enemies) do
+        love.graphics.draw(enemy.img, enemy.x, enemy.y)
     end
 end

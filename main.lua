@@ -1,6 +1,11 @@
 -- game logic lives here
+function checkCollision(x1, y1, w1, h1, x2, y2, w2, h2) 
+    return x1 < x2+w2 and x2 < x1+w1 and y1 < y2+h2 and y2 < y1+h1
+end
 
 player = { x = 200, y = 710, speed = 150, img = nil }
+isAlive = true
+score = 0
 
 -- shooting timer
 canShoot = true
@@ -68,6 +73,21 @@ function love.update(deltaTime) -- on every frame
         enemy.y = enemy.y + (200 * deltaTime)
         if enemy.y > 850 then
             table.remove(enemies, i)
+        end
+    end
+
+    for i, enemy in ipairs(enemies) do
+        for j, bullet in ipairs(bullets) do
+            if checkCollision(enemy.x, enemy.y, enemy.img:getWidth(), enemy.img:getHeight(), bullet.x, bullet.y, bullet.img:getWidth(), bullet.img:getHeight()) then
+                table.remove(bullets, j)
+                table.remove(enemies, i)
+                score = score + 1
+            end
+        end
+
+        if checkCollision(enemy.x, enemy.y, enemy.img:getWidth(), enemy.img:getHeight(), player.x, player.y, player.img:getWidth(), player.img:getHeight()) and isAlive then
+            table.remove(enemies, i)
+            isAlive = false
         end
     end
 end
